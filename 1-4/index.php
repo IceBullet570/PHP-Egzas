@@ -15,7 +15,13 @@ $numbers = [
     550,
 ];
 
-function exercises1()
-{
+function exercise1($number)
+    {
+    return !($number & 1);
+    }
 
-}
+$evenNumbers = array_filter($numbers, "exercise1");
+
+$evenNumbersSum = array_sum($evenNumbers);
+
+echo ($evenNumbersSum);
