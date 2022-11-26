@@ -24,7 +24,7 @@ $evenNumbers = array_filter($numbers, "exercise1");
 
 $evenNumbersSum = array_sum($evenNumbers);
 
-echo ("1 Uzduotis. Lyginiu skaiciu suma = " . $evenNumbersSum);
+echo ("1 Uzduotis. Lyginiu skaiciu suma = " . $evenNumbersSum . PHP_EOL);
 
 /*
  2. Grąžinkite visų skaičių, esančių $numbers masyve, sandaugą (1 balas), +0.5 jeigu array funkcijos naudojamos
@@ -37,11 +37,17 @@ $numbers2 = [
     [],
 ];
 
-function exercise2($number) : int
-{
-    return array_product ($number);
-}
 
-$arrayMultiplication = ($numbers2);
+function exercise2($givenArray) : int
+    {
+        return array_reduce($givenArray, function ($carry, $array) {
+            foreach ($array as $number)
+            $carry *= $number;
+            return $carry;
+            },
+            1);
+    }
+    
+$arrayMultiplication = (exercise2($numbers2));
 
-// echo ($arrayMultiplication);
+echo ("2 Uzduotis. Masyve esanciu skaiciu sandauga = " . $arrayMultiplication . PHP_EOL);
