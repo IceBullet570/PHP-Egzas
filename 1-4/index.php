@@ -97,10 +97,21 @@ $holidays = [
     ],
 ];
 
-function exercise3()
+function exercise3($arrays)
 {
-
+    foreach ($arrays as $array) {
+        unset($array['tourists']);
+        if ($array['price'] === null)
+        {
+        unset($array);
+        }
+        print_r($array);
+        }
 }
+
+$newHoliday = (exercise3($holidays));
+
+echo $newHoliday . PHP_EOL;
 
 /*
  4. Pakoreguokite 3 užduotį taip, kad ji duomenis rašytų ne į terminalą, o spausdintų į failą. (1 balas)
@@ -108,5 +119,9 @@ function exercise3()
 
 function exercise4()
 {
-
+    $filename = 'file.txt';
+    $data = $newHoliday . "Turetu buti 3 Uzduoties atsakymas";
+    file_put_contents($filename, $data);
 }
+exercise4($holidays);
+?>
