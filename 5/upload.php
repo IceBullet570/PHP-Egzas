@@ -28,5 +28,4 @@ if (move_uploaded_file($fileTmpPath, $fileStoragePath)) {
     fclose($fileResource);
 
     echo 'File uploaded successfully!';
-
 }
