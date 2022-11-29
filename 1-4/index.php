@@ -25,6 +25,7 @@ $evenNumbers = array_filter($numbers, "exercise1");
 $evenNumbersSum = array_sum($evenNumbers);
 
 echo ("1 Uzduotis. Lyginiu skaiciu suma = " . $evenNumbersSum . PHP_EOL);
+echo "***********************" . PHP_EOL;
 
 /*
  2. Grąžinkite visų skaičių, esančių $numbers masyve, sandaugą (1 balas), +0.5 jeigu array funkcijos naudojamos
@@ -51,6 +52,7 @@ function exercise2($givenArray) : int
 $arrayMultiplication = (exercise2($numbers2));
 
 echo ("2 Uzduotis. Masyve esanciu skaiciu sandauga = " . $arrayMultiplication . PHP_EOL);
+echo "***********************" . PHP_EOL;
 
 /*
  3. Masyve $holidays turime kelionių agentūros siūlomas keliones su kaina ir dalyvių skaičiumi.
@@ -97,30 +99,66 @@ $holidays = [
     ],
 ];
 
-function exercise3($arrays)
+function super_unique(array $array, mixed $key): array
 {
-    foreach ($arrays as $array) {
-        unset($array['tourists']);
-        if ($array['price'] === null)
-        {
-        unset($array);
+    $array1 = [];
+    foreach ($array as &$var) {
+        if (!isset($array1[$var[$key]]))
+            $array1[$var[$key]] = &$var;
+    }
+    $array = array_values($array1);
+    return $array;
+}
+ 
+function exercise3(array $holidaysList): void
+{
+    $allHolidays = [];
+    for ($i = 0; $i < count($holidaysList); $i++) {
+        if (isset($holidaysList[$i]['price'])) {
+            $holidaySummary = [
+                'destination' => $holidaysList[$i]['destination'],
+                'titles' => ['"' . $holidaysList[$i]['title'] . '"'],
+                'total' => $holidaysList[$i]['price'] * $holidaysList[$i]['tourists']
+            ];
+            foreach ($holidaysList as $holiday) {
+                if ($holidaySummary['destination'] === $holiday['destination'] && !in_array('"' . $holiday['title'] . '"', $holidaySummary['titles'], true)) {
+                    $holidaySummary['titles'][] = '"' . $holiday['title'] . '"';
+                    $holidaySummary['total'] += $holiday['price'] * $holiday['tourists'];
+                }
+            }
+            $holidaySummary['titles'] = implode(", ", $holidaySummary['titles']);
+            $allHolidays[] = $holidaySummary;
+        };
+    };
+ 
+    $allHolidays = super_unique($allHolidays, 'destination');
+ 
+    foreach ($allHolidays as $key => $holidays) {
+        echo 'Destination ' . '"' . $holidays['destination'] . '"' . PHP_EOL;
+        echo 'Titles: ' . $holidays['titles'] . PHP_EOL;
+        echo 'Total: ' . $holidays['total'] . PHP_EOL;
+ 
+        $array_keys = array_keys($allHolidays);
+        if (end($array_keys) !== $key) {
+            echo '************' . PHP_EOL;
         }
-        print_r($array);
-        }
+    };
 }
 
-$newHoliday = (exercise3($holidays));
+echo ("3 Uzduotis. Atostogu santraukos: " . PHP_EOL);
+exercise3($holidays);
+echo "***********************" . PHP_EOL;
 
-echo $newHoliday . PHP_EOL;
+// /*
+//  4. Pakoreguokite 3 užduotį taip, kad ji duomenis rašytų ne į terminalą, o spausdintų į failą. (1 balas)
+// */
 
-/*
- 4. Pakoreguokite 3 užduotį taip, kad ji duomenis rašytų ne į terminalą, o spausdintų į failą. (1 balas)
-*/
+$summary = exercise3($holidays);
 
 function exercise4()
 {
     $filename = 'file.txt';
-    $data = $newHoliday . "Turetu buti 3 Uzduoties atsakymas";
+    $data = $summary . "Turetu buti 3 Uzduoties atsakymas";
     file_put_contents($filename, $data);
 }
 exercise4($holidays);
