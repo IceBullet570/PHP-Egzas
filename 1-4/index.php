@@ -153,13 +153,45 @@ echo "***********************" . PHP_EOL;
 //  4. Pakoreguokite 3 užduotį taip, kad ji duomenis rašytų ne į terminalą, o spausdintų į failą. (1 balas)
 // */
 
-$summary = exercise3($holidays);
-
-function exercise4()
+function exercise4(array $holidaysList): void
 {
+    $allHolidays = [];
+    for ($i = 0; $i < count($holidaysList); $i++) {
+        if (isset($holidaysList[$i]['price'])) {
+            $holidaySummary = [
+                'destination' => $holidaysList[$i]['destination'],
+                'titles' => ['"' . $holidaysList[$i]['title'] . '"'],
+                'total' => $holidaysList[$i]['price'] * $holidaysList[$i]['tourists']
+            ];
+            foreach ($holidaysList as $holiday) {
+                if ($holidaySummary['destination'] === $holiday['destination'] && !in_array('"' . $holiday['title'] . '"', $holidaySummary['titles'], true)) {
+                    $holidaySummary['titles'][] = '"' . $holiday['title'] . '"';
+                    $holidaySummary['total'] += $holiday['price'] * $holiday['tourists'];
+                }
+            }
+            $holidaySummary['titles'] = implode(", ", $holidaySummary['titles']);
+            $allHolidays[] = $holidaySummary;
+        };
+    };
+ 
+    $allHolidays = super_unique($allHolidays, 'destination');
+
     $filename = 'file.txt';
-    $data = $summary . "Turetu buti 3 Uzduoties atsakymas";
-    file_put_contents($filename, $data);
+
+    foreach ($allHolidays as $key => $holidays) {
+        $file = fopen($filename, "w") or die;
+        fwrite ($file, 'Destination ' . '"' . $holidays['destination'] . '"' . PHP_EOL);
+        fwrite ($file, 'Titles: ' . $holidays['titles'] . PHP_EOL);
+        fwrite ($file, 'Total: ' . $holidays['total'] . PHP_EOL);
+ 
+        $array_keys = array_keys($allHolidays);
+        if (end($array_keys) !== $key) {
+            fwrite ($file, '************' . PHP_EOL);
+        }
+        fclose($file);
+    };
 }
+
+echo ("4 Uzduotis. Sukurtas failas file.txt su 3 uzduoties duomenimis" . PHP_EOL);
 exercise4($holidays);
-?>
+echo "***********************" . PHP_EOL;

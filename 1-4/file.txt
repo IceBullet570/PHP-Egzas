@@ -1,1 +1,3 @@
-Turetu buti 3 Uzduoties atsakymas
+Destination "Sydney"
+Titles: "Spectacular Sydney"
+Total: 37170
