@@ -179,16 +179,18 @@ function exercise4(array $holidaysList): void
     $filename = 'file.txt';
 
     foreach ($allHolidays as $key => $holidays) {
-        $file = fopen($filename, "w") or die;
+        $file = fopen($filename, "a+") or die;
         fwrite ($file, 'Destination ' . '"' . $holidays['destination'] . '"' . PHP_EOL);
         fwrite ($file, 'Titles: ' . $holidays['titles'] . PHP_EOL);
         fwrite ($file, 'Total: ' . $holidays['total'] . PHP_EOL);
- 
+        fclose($file);
+
         $array_keys = array_keys($allHolidays);
         if (end($array_keys) !== $key) {
+            $file = fopen($filename, "a") or die;
             fwrite ($file, '************' . PHP_EOL);
+            fclose($file);
         }
-        fclose($file);
     };
 }
 
